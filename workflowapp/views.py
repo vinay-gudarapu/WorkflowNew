@@ -52,6 +52,28 @@ def login(request):
 @api_view(['POST', 'GET'])
 @authentication_classes([])
 @permission_classes([])
+def create_employee(request):
+    response = {
+        'data': None,
+        'error': None,
+        'statusCode': 1
+    }
+    try:
+        password = pbkdf2_sha256.encrypt("Srinivas@1234")
+        Employee.objects.create(firstname='srinivas', lastname='srinivas', email="srinivas@gmail.com", 
+                                username="srinivas@gmail.com", password=password)
+        response['data'] = 'Employee added successfully'
+        response['statusCode'] = 0
+    except Exception as e:
+        response['data'] = 'Error in employee'
+        response['error'] = str(e)
+        logging.error("Error in employee : ", str(e))
+    return JsonResponse(response)
+
+
+@api_view(['POST', 'GET'])
+@authentication_classes([])
+@permission_classes([])
 def employee(request):
     response = {
         'data': None,
