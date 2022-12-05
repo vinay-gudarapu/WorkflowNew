@@ -1,0 +1,117 @@
+<div class="sideblock">
+<!--    <h2>Holiday Calendar</h2>-->
+    {% load static %}
+    <form class="form employee-form employee-flex" enctype="multipart/form-data" method="POST">
+        {% csrf_token %}
+<!--        <h2 style="color:#1D54A4; margin-top:4rem">Holiday Calendar</h2>-->
+<!--        <h3 style="color:#000;text-align:center;background-color:#C9EEFF;padding:10px;margin-bottom:2rem">Employee</h3>-->
+
+        <div class="firstblock">
+            <h3 style="color:#000;text-align:center;background-color:#C9EEFF;padding:10px;margin-bottom:2rem">Employee</h3>
+            <label  for="fname">First Name</label>
+            <input type="text" name="firstname" id="fname" required/>
+            <br/>
+            <br/>
+
+            <label for="lname">Last Name</label>
+            <input type="text" name="lastname" id="lname" required/>
+            <br/>
+            <br/>
+
+            <label for="type">Type</label>
+            <select id="type" name="type" required>
+                <option value="" selected disabled></option>
+                <option value="Internal">Internal</option>
+                <option value="External">External</option>
+            </select>
+            <br/>
+            <br/>
+
+            <label for="department">Department</label>
+            <select id="department" name="department" required>
+                <option value="" selected disabled></option>
+                {% for dep in departments %}
+                <option value="{{ dep.id }}">{{ dep.name }}</option>
+                {% endfor %}
+            </select>
+            <br/>
+            <br/>
+
+            <label for="mbloff">Mobile(Official)</label>
+            <input type="tel" name="mob_official" id="mbloff" required/>
+            <br/>
+            <br/>
+
+            <label for="mblprsnl">Mobile(Personal)</label>
+            <input type="tel" name="mob_personal" id="mblprsnl" required/>
+            <br/>
+            <br/>
+
+            <label for="type">Email</label>
+            <input type="email" name="email" id="email" required/>
+            <br/>
+            <br/>
+
+            <label for="addl1">Address Line1</label>
+            <input type="text" name="address_line1" id="addl1" required/>
+            <br/>
+            <br/>
+
+            <label for="addl2">Address Line2</label>
+            <input type="text" name="address_line2" id="addl2" required/>
+            <br/>
+            <br/>
+
+            <label for="city">City</label>
+            <input type="text" name="city" id="city" required/>
+            <br/>
+            <br/>
+
+            <label for="state">State</label>
+            <input type="text" name="state" id="state" required/>
+            <br/>
+            <br/>
+
+            <label for="country">Country</label>
+            <input type="text" name="country" id="country" required/>
+            <br/>
+            <br/>
+
+            <label for="pincode">Pincode</label>
+            <input type="text" name="pincode" id="pincode" required/>
+            <br/>
+            <br/>
+
+            <label for="password">Password</label>
+            <input type="password" name="password" id="password" required/>
+            <br/>
+            <br/>
+
+            <label>Status</label>
+        <span class="addteamradio">
+            <input type="radio" name="status" id="active" value="A" required checked/>
+            <label for="active">Active</label>
+
+            <input type="radio" name="status" id="inactive" value="I" required/>
+            <label for="inactive">Inactive</label>
+            <br/>
+            <br/>
+        </span>
+
+
+
+        <button type="reset">Cancel</button>
+        <button type="submit">Save</button>
+        </div>
+        <div>
+            <div style="width:150px; height:150px;">
+            <img src="{% static '/assets/images/user.jpg' %}" id="blah" style="width:150px; height:150px;"/>
+            </div>
+            <br/>
+            <br/>
+<!--            <label for="myfile">Select file:</label>-->
+            <input type='file' name="profile" onchange="readURL(this);" />
+<!--            <input type="file" id="myfile" name="myfile" style="cursor:pointer;"><br><br/>-->
+        </div>
+    </form>
+</div>

@@ -1,0 +1,120 @@
+<div class="sideblock">
+<!--    <h2>Holiday Calendar</h2>-->
+    {% load static %}
+    <form class="form employee-form employee-flex" enctype="multipart/form-data" method="POST">
+        {% csrf_token %}
+<!--        <h2 style="color:#1D54A4; margin-top:4rem">Holiday Calendar</h2>-->
+<!--        <h3 style="color:#000;text-align:center;background-color:#C9EEFF;padding:10px;margin-bottom:2rem">Employee</h3>-->
+
+        <div class="firstblock">
+            <h3 style="color:#000;text-align:center;background-color:#C9EEFF;padding:10px;margin-bottom:2rem">Edit Employee</h3>
+            <label  for="fname">First Name</label>
+            <input type="text" value="{{ employee.firstname }}" name="firstname" id="fname" required/>
+            <br/>
+            <br/>
+
+            <label for="lname">Last Name</label>
+            <input type="text" value="{{ employee.lastname }}" name="lastname" id="lname" required/>
+            <br/>
+            <br/>
+
+            <label for="type">Type</label>
+            <select id="type" name="type" required>
+                <option value="Internal" {% if employee.type == 'Internal' %} selected {% endif %}>Internal</option>
+                <option value="External" {% if employee.type == 'External' %} selected {% endif %}>External</option>
+            </select>
+            <br/>
+            <br/>
+
+            <label for="department">Department</label>
+            <select id="department" name="department" required>
+                <option value="" selected disabled></option>
+                {% for dep in departments %}
+                <option value="{{ dep.id }}" {% if employee.departmentid == dep.id %} selected {% endif %}>{{ dep.name }}</option>
+                {% endfor %}
+            </select>
+            <br/>
+            <br/>
+
+            <label for="mbloff">Mobile(Official)</label>
+            <input type="tel" value="{{ employee.mobileoffice }}" name="mob_official" id="mbloff" required/>
+            <br/>
+            <br/>
+
+            <label for="mblprsnl">Mobile(Personal)</label>
+            <input type="tel" value="{{ employee.mobilepersonal }}" name="mob_personal" id="mblprsnl" required/>
+            <br/>
+            <br/>
+
+            <label for="type">Email</label>
+            <input type="email" value="{{ employee.email }}" name="email" id="email" required/>
+            <br/>
+            <br/>
+
+            <label for="addl1">Address Line1</label>
+            <input type="text" value="{{ employee.addressline1 }}" name="address_line1" id="addl1" required/>
+            <br/>
+            <br/>
+
+            <label for="addl2">Address Line2</label>
+            <input type="text" value="{{ employee.addressline2 }}" name="address_line2" id="addl2" required/>
+            <br/>
+            <br/>
+
+            <label for="city">City</label>
+            <input type="text" value="{{ employee.city }}" name="city" id="city" required/>
+            <br/>
+            <br/>
+
+            <label for="state">State</label>
+            <input type="text" value="{{ employee.state }}" name="state" id="state" required/>
+            <br/>
+            <br/>
+
+            <label for="country">Country</label>
+            <input type="text" value="{{ employee.country }}" name="country" id="country" required/>
+            <br/>
+            <br/>
+
+            <label for="pincode">Pincode</label>
+            <input type="text" value="{{ employee.pincode }}" name="pincode" id="pincode" required/>
+            <br/>
+            <br/>
+
+            <label for="password">Password</label>
+            <input type="password" name="password" id="password"/>
+            <br/>
+            <br/>
+
+            <label>Status</label>
+        <span class="addteamradio">
+            <input type="radio" name="status" id="active" value="A" required {% if employee.status == 'A' %} checked {% endif %}/>
+            <label for="active">Active</label>
+
+            <input type="radio" name="status" id="inactive" value="I" required {% if employee.status == 'I' %} checked {% endif %}/>
+            <label for="inactive">Inactive</label>
+            <br/>
+            <br/>
+        </span>
+
+
+
+        <button type="reset">Cancel</button>
+        <button type="submit">Save</button>
+        </div>
+        <div>
+            <div style="width:150px; height:150px;">
+                {% if image %}
+            <img src="data:image/png;base64,{{ image }}" id="blah" style="width:150px; height:150px;"/>
+                {% else %}
+            <img src="{% static '/assets/images/user.jpg' %}" id="blah" style="width:150px; height:150px;"/>
+                {% endif %}
+            </div>
+            <br/>
+            <br/>
+<!--            <label for="myfile">Select file:</label>-->
+            <input type='file' name="profile" onchange="readURL(this);" />
+<!--            <input type="file" id="myfile" name="myfile" style="cursor:pointer;"><br><br/>-->
+        </div>
+    </form>
+</div>

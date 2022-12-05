@@ -1,0 +1,35 @@
+<html>
+<div class="sideblock">
+    <div class="tabletopbar">
+        <h2>Employees</h2>
+        <a href="add-employee"><i class="bi bi-plus" style=""></i></a>
+    </div>
+        <table id="tableID" class="cell-border row-border stripe">
+            <thead>
+                <tr>
+                    <td>Name</td>
+                    <td>Mobile</td>
+                    <td>Department</td>
+                    <td>Location</td>
+                    <td>Status</td>
+                    <td></td>
+                </tr>
+            </thead>
+
+            <tbody>
+                {% for emp in emp_list %}
+                <tr>
+                    <td>{{ emp.name }}</td>
+                    <td>{{ emp.mobile }}</td>
+                    <td>{{ emp.dep }}</td>
+                    <td>{{ emp.loc }}</td>
+                    <td>{{ emp.status }}</td>
+                    <td>
+                        <a href="edit-employee{{ emp.id }}" id="{{ emp.id }}"><i class="fa fa-edit"></i></a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</html>

@@ -1,0 +1,115 @@
+<html>
+    <head>
+        <title>Holiday List</title>
+        <link rel="stylesheet" type="text/css" href="../static/assets/css/style.css" />
+        <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+        <!--header & sidebar icons css-->
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css">
+
+         <!-- Datatable plugin CSS file -->
+        <link rel="stylesheet" href="https://cdn.datatables.net/1.10.22/css/jquery.dataTables.min.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fomantic-ui/2.8.8/semantic.min.css" />
+
+        <!-- jQuery library file -->
+        <script type="text/javascript" src="https://code.jquery.com/jquery-3.5.1.js"></script>
+
+        <!-- Datatable plugin JS library file -->
+     <script type="text/javascript" src="https://cdn.datatables.net/1.10.22/js/jquery.dataTables.min.js"></script>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" crossorigin="anonymous">
+        <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" crossorigin="anonymous"></script>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    </head>
+
+    <body>
+    {% for message in messages %}
+    <div class="container-fluid p-0">
+      <div class="alert {{ message.tags }} alert-dismissible" role="alert" >
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        {{ message }}
+      </div>
+    </div>
+{% endfor %}
+
+<!--Header Div Starts-->
+    <div class="header">
+            <div class="headerleft">
+                <img src="../static/assets/images/logopython.png" style="height:5rem;"/>
+            </div>
+            <div class="headerright">
+                <span><i class="bi bi-box-arrow-left" style="margin-right:0.5rem; font-size:2rem"></i></span>
+                <a style="">Logout</a>
+            </div>
+        </div>
+<!--Header Div Ends-->
+
+<div class="flexbox">
+<!--Sidebar Div Starts-->
+        <div class="sidebar pt-0">
+            <span style="text-align: right;"><a style="font-size: 25px;" href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a></span>
+            <a href="holidays"><i class="bi bi-calendar3"></i> Holiday Calendar</a>
+            <a href="employees"><i class="bi bi-people-fill"></i> Employees</a>
+            <a href="teams"><i class="bi bi-code-slash"></i> Teams</a>
+            <a href="tasks"><i class="bi bi-bezier"></i> Tasks</a>
+            <a><i class="bi bi-globe"></i> Requests</a>
+            <a><i class="bi bi-images"></i> Reports</a>
+        </div>
+<!--Sidebar Div Ends-->
+
+<!--All templates (html files) starts-->
+    {% include template_name %}
+<!--All templates (html files) ends-->
+</div>
+
+    <script>
+        /* Initialization of datatable */
+        $(document).ready(function() {
+            $('#tableID').DataTable({ });
+        });
+
+
+        function openCity(evt, cityName) {
+      var i, tabcontent, tablinks;
+      tabcontent = document.getElementsByClassName("tabcontent");
+      for (i = 0; i < tabcontent.length; i++) {
+        tabcontent[i].style.display = "none";
+      }
+      tablinks = document.getElementsByClassName("tablinks");
+      for (i = 0; i < tablinks.length; i++) {
+        tablinks[i].className = tablinks[i].className.replace(" active", "");
+      }
+      document.getElementById(cityName).style.display = "block";
+      evt.currentTarget.className += " active";
+    }
+
+    function readURL(input) {
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+                   $('#blah').attr('hidden', false)
+                reader.onload = function (e) {
+                    $('#blah')
+                        .attr('src', e.target.result)
+                        .width(150)
+                        .height(200);
+                };
+
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+
+<!--         function openCity(cityName) {-->
+<!--            var i;-->
+<!--            var x = document.getElementsByClassName("city");-->
+<!--            for (i = 0; i < x.length; i++) {-->
+<!--                x[i].style.display = "none";-->
+<!--            }-->
+<!--            document.getElementById(cityName).style.display = "block";-->
+<!--        }-->
+</script>
+
+    </body>
+</html>

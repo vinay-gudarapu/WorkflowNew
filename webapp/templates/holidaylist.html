@@ -1,0 +1,35 @@
+<html>
+<div class="sideblock">
+    <div class="tabletopbar">
+        <h2>Organization Holidays List</h2>
+        <a href="add-holiday"><i class="bi bi-plus" style=""></i></a>
+    </div>
+        <table id="tableID" class="cell-border row-border stripe">
+            <thead>
+                <tr>
+                    <td>Date</td>
+                    <td>Holiday</td>
+                    <td>Type</td>
+                    <td>Department</td>
+                    <td>Status</td>
+                    <td></td>
+                </tr>
+            </thead>
+
+            <tbody>
+                {% for holiday in holidays_list %}
+                <tr>
+                    <td>{{ holiday.date }}</td>
+                    <td>{{ holiday.name }}</td>
+                    <td>{{ holiday.type }}</td>
+                    <td>{{ holiday.department }}</td>
+                    <td>{{ holiday.status }}</td>
+                    <td>
+                        <a href="edit-holiday{{ holiday.id }}" id="{{ holiday.id }}"><i class="fa fa-edit"></i></a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</html>

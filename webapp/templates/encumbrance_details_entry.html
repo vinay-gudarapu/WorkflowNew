@@ -1,0 +1,326 @@
+{% load static %}
+<style>
+    .resizer{
+        cursor: col-resize;
+        border-left: 2px solid #D1D1D1;
+    }
+    .drop-zone {
+      height: 200px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      font-family: "Quicksand", sans-serif;
+      font-weight: 500;
+      font-size: 20px;
+      cursor: pointer;
+      color: #cccccc;
+      border: 4px dashed #5B9BD5;
+      border-radius: 10px;
+    }
+
+    .drop-zone--over {
+      border-style: solid;
+    }
+
+    .drop-zone__input {
+      display: none;
+    }
+
+    .drop-zone__thumb {
+      width: 100%;
+      height: 100%;
+      border-radius: 10px;
+      overflow: auto;
+      background-color: #cccccc;
+      background-size: cover;
+      position: relative;
+    }
+
+    .drop-zone__thumb::after {
+      content: attr(data-label);
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      padding: 5px 0;
+      color: #ffffff;
+      background: rgba(0, 0, 0, 0.75);
+      font-size: 14px;
+      text-align: center;
+    }
+    /* Style the tab */
+    .tab {
+      overflow: hidden;
+      border: 1px solid #ccc;
+      background-color: #f1f1f1;
+    }
+
+    /* Style the buttons inside the tab */
+    .tab button {
+      background-color: inherit;
+      float: left;
+      border: none;
+      outline: none;
+      cursor: pointer;
+      padding: 14px 16px;
+      transition: 0.3s;
+      font-size: 17px;
+    }
+
+    /* Change background color of buttons on hover */
+    .tab button:hover {
+      background-color: #ddd;
+    }
+
+    /* Create an active/current tablink class */
+    .tab button.active {
+      background-color: #ccc;
+    }
+
+    /* Style the tab content */
+    .tabcontent {
+      display: none;
+      padding: 6px 12px;
+      border: 1px solid #ccc;
+      border-top: none;
+    }
+    .main {
+      padding: 16px;
+      margin-top: 30px;
+      overflow-x: scroll;
+    }
+    .zoom{
+        border-radius:3px;
+    }
+    .pt-2{
+        width:50%;
+        overflow-x:scroll;
+        margin-right:2rem;
+    }
+    .main{
+        width:99% !important;
+        overflow:scroll;
+        height:300px;
+    }
+    .button {
+      width: 300px;
+      height: 60px;
+      margin: 10px;
+      padding: 5px;
+      border-radius: 3px;
+    }
+    td{
+        width:12.5%;
+    }
+    td textarea, td select{
+        width:100%;
+    }
+    .btn{
+        background-color:#5B9BE0;
+    }
+    #dharani_notes{
+        border: 1px solid black;
+        border-radius: 3px;
+    }
+    .delete{
+        cursor: pointer;
+    }
+</style>
+<script src="https://documentservices.adobe.com/view-sdk/viewer.js"></script>
+<div  class="sideblock pt-0">
+    <span style="font-size:25px;cursor:pointer;display:none" id="open_sidebar">&#9776;</span>
+    <div style="display: flex">
+        <!-- Left element -->
+        <div class="pt-2">
+            <h4 class="pb-3" style="color:#5B9BD5;">Encumbrance Details {% if edit_access %}Entry{% else %}Verification{% endif %}</h4>
+            <div class="tab" id="add_screen">
+              <button class="tablinks active edit_access" onclick="openScreen(event, 'drop-zone')"><i class="fa fa-plus" aria-hidden="true"></i>&nbsp; Add Screen</button>
+<!--              <button class="tablinks" onclick="openCity(event, 'London')">London</button>-->
+<!--              <button class="tablinks" onclick="openCity(event, 'Paris')">Paris</button>-->
+<!--              <button class="tablinks" onclick="openCity(event, 'Tokyo')">Tokyo</button>-->
+            </div>
+            <div id="screens">
+<!--                <div id="London" class="tabcontent">-->
+<!--                  <h3>London</h3>-->
+<!--                  <p>London is the capital city of England.</p>-->
+<!--                </div>-->
+    <!--            <div id="Paris" class="tabcontent">-->
+    <!--              <h3>Paris</h3>-->
+    <!--              <p>Paris is the capital of France.</p>-->
+    <!--            </div>-->
+
+    <!--            <div id="Tokyo" class="tabcontent">-->
+    <!--              <h3>Tokyo</h3>-->
+    <!--              <p>Tokyo is the capital of Japan.</p>-->
+    <!--            </div>-->
+                <div id="drop-zone"  class="tabcontent edit_access" style="display:block;">
+<!--                    <div id="navbar">-->
+<!--                        <button type="button" onclick="zoomin()"> Zoom In</button>-->
+<!--                        <button type="button" onclick="zoomout()"> Zoom Out</button>-->
+<!--                    </div>-->
+<!--                    <div class="main">-->
+<!--                        <img id="map" src="http://www.worldatlas.com/webimage/countrys/europelargesm.jpg" />-->
+<!--                    </div>-->
+                    <div class="drop-zone mt-3">
+                        <span class="drop-zone__prompt">Drop file here or click to upload</span>
+                        <input type="file" name="myFile" id="upload_file" class="drop-zone__input">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- The resizer -->
+        <div class="resizer" id="dragMe"></div>
+
+        <!-- Right element -->
+        <div class="m-1" style="width: -webkit-fill-available;">
+            <table class="request-table" style="height:200px;">
+              <thead>
+                  <tr>
+                    <th colspan="3">Title Verification Service - {{ request_obj.id }}</th>
+                  </tr>
+              </thead>
+                <tbody>
+              <tr>
+                <td><b>Request ID:</b> {{ request_obj.id }}</td>
+                <td><b>Requester:</b> {{ request_obj.name }}</td>
+              </tr>
+              <tr>
+                <td><b>Requester Contact:</b> {{ request_obj.num }}</td>
+                <td><b>Status:</b>
+                    {% if request_obj.status == 'I' %}
+                    In-Progress
+                    {% else %}
+                    Completed
+                    {% endif %}
+                </td>
+              </tr>
+              <tr>
+                <td><b>Service Type:</b> {{ request_obj.service_type }}</td>
+                <td><b>Property Type:</b> {{ request_obj.property_type }}</td>
+              </tr>
+                </tbody>
+            </table>
+            <form class="card-body" action="javascript:void(0);" onsubmit="save_data()">
+            <table class="table table-bordered" id="table" style="width:100%;">
+            <thead>
+            <tr>
+                <th>S.No</th>
+                <th>Reg. Doc No</th>
+                <th>Doc Type</th>
+                <th>Claimant Name</th>
+                <th>Executant Name</th>
+                <th>Survey No</th>
+                <th>Extent</th>
+                <th>Village</th>
+                <th>Mandal</th>
+                <th>District</th>
+                <th class="edit_access"></th>
+            </tr>
+
+            </thead>
+
+                <tbody id="prohibited_table">
+            {% for detail in encumbrance_details %}
+            <tr id="tr{{ detail.id }}">
+                <td class="loop">{{ forloop.counter }}</td>
+                <td class="p-0"><textarea class="reg_doc_no" required>{{ detail.reqdocno }}</textarea></td>
+                <td class="p-0"><textarea class="doc_type" required>{{ detail.doctype }}</textarea></td>
+                <td class="p-0"><textarea class="cliamant_name" required>{{ detail.claimantname }}</textarea></td>
+                <td class="p-0"><textarea class="executant_name" required>{{ detail.executantname }}</textarea></td>
+                <td class="p-0"><textarea class="survey_no" required>{{ detail.surveyno }}</textarea></td>
+                <td class="p-0"><textarea class="extent" required>{{ detail.extent }}</textarea></td>
+                <td class="p-0"><textarea class="village" required>{{ detail.village }}</textarea></td>
+                <td class="p-0"><textarea class="mandal" required>{{ detail.mandal }}</textarea></td>
+                <td class="p-0"><textarea class="district" required>{{ detail.district }}</textarea></td>
+                <td class="p-0 edit_access"><i style="font-size:24px" id="delete{{ detail.id }}" class="fa delete">&#xf014;</i></td>
+            </tr>
+            {% endfor %}
+                {% if not encumbrance_details and edit_access %}
+                    <tr>
+                        <td class="loop">1</td>
+                        <td class="p-0"><textarea class="reg_doc_no" required></textarea></td>
+                        <td class="p-0"><textarea class="doc_type" required></textarea></td>
+                        <td class="p-0"><textarea class="cliamant_name" required></textarea></td>
+                        <td class="p-0"><textarea class="executant_name" required></textarea></td>
+                        <td class="p-0"><textarea class="survey_no" required></textarea></td>
+                        <td class="p-0"><textarea class="extent" required></textarea></td>
+                        <td class="p-0"><textarea class="village" required></textarea></td>
+                        <td class="p-0"><textarea class="mandal" required></textarea></td>
+                        <td class="p-0"><textarea class="district" required></textarea></td>
+                        <td class="p-0"><i style="font-size:24px"  class="fa delete">&#xf014;</i></td>
+                    </tr>
+                {% endif %}
+                </tbody>
+            </table>
+                {% if checklist %}
+            <label class="mt-2" style="display: -webkit-inline-box;">
+                {{ checklist.question }}:
+                <select class="form-control ml-2" id="claimant" style="width:30%" required>
+                    {% if checklist.answer == "Y" %}
+                    <option value="Y" selected>Yes</option>
+                    <option value="N">No</option>
+                    {% elif checklist.answer == "N" %}
+                    <option value="Y">Yes</option>
+                    <option value="N" selected>No</option>
+                    {% else %}
+                    <option disabled selected></option>
+                    <option value="Y">Yes</option>
+                    <option value="N">No</option>
+                    {% endif %}
+                </select>
+            </label>
+                {% endif %}
+<!--                <div class="row">-->
+                <div class="col">
+                        <button type="button" class="btn mr-4 add_row edit_access" id="add_row"><i class="fa fa-plus" aria-hidden="true"></i>&nbsp;&nbsp;Add row</button>
+                    </div>
+        <!--        <div class="text-right col">-->
+        <!--    <button type="submit" id="review" class="btn btn-primary">Send</button>-->
+        <!--            </div>-->
+                {% if edit_access %}
+                    <textarea placeholder="Notes"  class="form-control mt-3 mb-3" id="notes">{{ request_obj.notes }}</textarea>
+                {% else %}
+                    <textarea placeholder="Reviewer Comments" class="form-control mt-3 mb-3" id="comments">{{ request_obj.remarks }}</textarea>
+                {% endif %}
+                    <div class="row">
+                        <label class="col">Hours worked on:
+                            {% if edit_access %}
+                        <input type="number" class="form-control" id="entryhours" value="{{ request_obj.entryhours }}" required style="width:50%;">
+                        {% else %}
+                        <input type="number" class="form-control" id="verifyhours" value="{{ request_obj.verifyhours }}" required style="width:50%;">
+                        {% endif %}
+                        </label>
+                        <label class="col">Status:
+                        <select id="status" class="form-control" style="width:50%;">
+                            {% if request_obj.task_status == 'C' %}
+                            <option value="C" selected>Completed</option>
+                            {% else %}
+                            <option selected disabled></option>
+                            <option value="C">Completed</option>
+                            {% endif %}
+                        </select></label>
+                    </div>
+                    <div class="text-right">
+                        {% if edit_access %}
+                        <button class="btn" type="button" id="clear">Cancel</button>
+                        <button type="submit" id="save" class="btn ml-5">Save</button>
+                        {% else %}
+                        <button class="btn" type="button" id="revert" style="color:white; background-color:red;">Revert</button>
+                        <button type="submit" id="accept" class="btn ml-5" style="color:white; background-color:green;">Accepted</button>
+                        {% endif %}
+                    </div>
+<!--                    </div>-->
+            </form>
+        </div>
+    </div>
+</div>
+<script>
+    requestid = '{{ request_obj.id }}';
+    prelimtaskid = '{{ request_obj.task_id }}';
+    edit_access = '{{ edit_access }}';
+    verify_access = '{{ verify_access }}';
+    var CSRF_TOKEN = '{{ csrf_token }}';
+</script>
+<script src="{% static '/assets/js/encumbrance_details.js' %}"></script>

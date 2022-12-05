@@ -1,0 +1,128 @@
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+<style>
+    .select2-container--default .select2-selection--multiple {
+        background-color: #efebeb;
+        border: none;
+    }
+    .select2-container--default .select2-selection--multiple .select2-selection__choice {
+        background-color: #dfdfe3;
+    }
+    .select2-container--default.select2-container--focus .select2-selection--multiple {
+        border: none;
+        outline: 0;
+    }
+</style>
+{% load static %}
+<div class="sideblock">
+<!--    <h2>Holiday Calendar</h2>-->
+
+    <form class="form team-form" method="POST">
+        {% csrf_token %}
+<!--        <h2 style="color:#1D54A4; margin-top:4rem">Holiday Calendar</h2>-->
+        <h3 style="color:#000;text-align:center;background-color:#C9EEFF;padding:10px;margin-bottom:2rem">Edit Team</h3>
+
+            <label for="name">Name</label>
+            <input type="text" value="{{ team.teamname }}" name="name" id="name" required/>
+            <br/>
+            <br/>
+
+            <label for="team_lead">Team Lead</label>
+            <select id="team_lead" name="team_lead" required>
+                {% for emp in employees_list %}
+                <option value="{{ emp.id }}" {% if emp.id == team.teamlead %} selected {% endif %}>{{ emp.firstname }} {{ emp.lastname }}</option>
+                {% endfor %}
+            </select>
+            <br/>
+            <br/>
+            <label for="department">Department</label>
+            <select id="department" name="department" required>
+                <option value="" selected disabled></option>
+                {% for dep in departments %}
+                <option value="{{ dep.id }}" {% if dep.id == team.departmentid %} selected {% endif %}>{{ dep.name }}</option>
+                {% endfor %}
+            </select>
+            <br/>
+            <br/>
+            <label for="location">Location</label>
+            <input type="text" value="{{ team.location }}" name="location" id="location" required/>
+            <br/>
+            <br/>
+            <label>Status</label>
+        <span class="addteamradio">
+            <input type="radio" name="status" id="active" value="A" required {% if team.status == 'A' %} checked {% endif %}/>
+            <label for="active">Active</label>
+
+            <input type="radio" name="status" id="inactive" value="I" required {% if team.status == 'I' %} checked {% endif %}/>
+            <label for="inactive">Inactive</label>
+            <br/>
+            <br/>
+        </span>
+
+<!--        <label  for="members">Members</label>-->
+<!--        <input type="text" name="members" id="members" required/>-->
+<!--        <br/>-->
+<!--        <br/>-->
+
+<!--        <label  for="search">Search</label>-->
+<!--        <input type="text" name="search" id="search" required/>-->
+<!--        <button style="padding:5px 10px; margin-left:1rem;">Add</button>-->
+<!--        <br/>-->
+<!--        <br/>-->
+<!--        <label for="search">Search</label>-->
+<!--        <input list="search" id="myemployee" name="search" />-->
+<!--        <datalist id="search">-->
+<!--          <option value="Chrome">-->
+<!--          <option value="Firefox">-->
+<!--          <option value="Internet Explorer">-->
+<!--          <option value="Opera">-->
+<!--          <option value="Safari">-->
+<!--          <option value="Microsoft Edge">-->
+<!--        </datalist>-->
+<!--        <button style="padding:5px 10px; margin-left:1rem;">Add</button>-->
+<!--        <br/>-->
+<!--        <br/>-->
+        <label for="members">Members</label>
+        <select class="js-example-basic-multiple" id="members" name="members" multiple="multiple" required style="background-color: #efebeb;">
+          {% for emp in employees_list %}
+                <option value="{{ emp.id }}" class="class{{ emp.id }}" id="{{ emp.id }}" {% if emp.id in team_list %} selected {% endif %}>{{ emp.firstname }} {{ emp.lastname }}</option>
+            {% endfor %}
+        </select>
+        <br/>
+        <br/>
+        <div id="images" class="row">
+
+        </div>
+        <br/>
+        <br/>
+        <button type="reset">Cancel</button>
+        <button type="submit">Save</button>
+    </form>
+</div>
+<script>
+    $(document).ready(function() {
+        $('.js-example-basic-multiple').select2();
+        $('#members').trigger("change");
+    });
+    $('#members').change(function(){
+        console.log('erer')
+        html = ''
+        members_list = $(this).val()
+        for(i=0;i<members_list.length;i++){
+            $.get("http://localhost:8000/get-employee?emp_id="+members_list[i], function (res) {
+                if(res['data']){
+                    src = "data:image/" + 'png' + ";base64," + res['data'];
+                }else{
+                    src = "{% static '/assets/images/user.jpg' %}"
+                }
+                html += '<div style="width:150px; height:150px;" class="m-4"><img src="'+src+'" style="width:150px; height:150px;"/>' +
+                        '<center><b>'+res["name"]+'</b></center></div>'
+                console.log(html)
+                $('#images').html(html)
+            });
+        }
+        console.log(html)
+        $('#images').html(html)
+        console.log($(this).val())
+    });
+</script>

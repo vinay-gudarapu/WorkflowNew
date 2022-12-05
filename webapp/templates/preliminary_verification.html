@@ -1,0 +1,255 @@
+<style>
+  .form-control{
+    display: initial;
+    width:50%
+  }
+  .card-header{
+    color: white;
+    cursor: pointer;
+  }
+</style>
+{% load static %}
+{% csrf_token %}
+
+<div  class="sideblock" style="padding: 10px;">
+<table class="request-table" style="height:200px">
+  <thead>
+      <tr>
+        <th colspan="3">Preliminary Verification - {{ request_obj.id }}</th>
+      </tr>
+  </thead>
+    <tbody>
+  <tr>
+    <td><b>Request ID:</b> {{ request_obj.id }}</td>
+    <td><b>Requester:</b> {{ request_obj.name }}</td>
+  </tr>
+  <tr>
+    <td><b>Requester Contact:</b> {{ request_obj.num }}</td>
+    <td><b>Status:</b>
+      {% if request_obj.status == 'P' %}
+        Pending
+      {% elif request_obj.status == 'I' %}
+        In-Progress
+      {% else %}
+        Completed
+      {% endif %}
+    </td>
+  </tr>
+  <tr>
+    <td><b>Service Type:</b> {{ request_obj.service_type }}</td>
+    <td><b>Property Type:</b> {{ request_obj.property_type }}</td>
+  </tr>
+    </tbody>
+</table>
+<div class="row m-5">
+  <div class="col-sm-4">
+    <div class="card">
+      <div class="card-header" style="background-color:{{ dharani_details.color }}" onclick="location.href = 'dharani-details-entry{{ dharani_details.task_id }}';">
+        Dharani Details
+      </div>
+      <div class="card-body">
+        <p><b>Status:</b> {{ dharani_details.status }}</p>
+        <p><b>Assign to:</b>
+        <select class="form-control" id="D_A">
+          {% if dharani_details.assigned_id %}
+          {% for emp in employees_list %}
+          <option value="{{ emp.id }}" {% if emp.id == dharani_details.assigned_id %} selected {% endif %} >{{ emp.employee_name }}</option>
+          {% endfor %}
+          {% else %}
+          <option selected disabled></option>
+          {% for emp in employees_list %}
+          <option value="{{ emp.id }}">{{ emp.employee_name }}</option>
+          {% endfor %}
+          {% endif %}
+        </select>
+        </p>
+        <p><b>Assigned On:</b> {{ dharani_details.assigned_on }}</p>
+        <p><b>{% if dharani_details.completeddate != 'N/A' %}Verified By:{% else %}Verify{% endif %}</b>
+        <select class="form-control" id="D_V">
+          {% if dharani_details.verified_id %}
+          {% for emp in employees_list %}
+          <option value="{{ emp.id }}" {% if emp.id == dharani_details.verified_id %} selected {% endif %} >{{ emp.employee_name }}</option>
+          {% endfor %}
+          {% else %}
+          <option selected disabled></option>
+          {% for emp in employees_list %}
+          <option value="{{ emp.id }}">{{ emp.employee_name }}</option>
+          {% endfor %}
+          {% endif %}
+        </select>
+        </p>
+        <p><b>Verified On:</b> {{ dharani_details.completeddate }}</p>
+      </div>
+    </div>
+  </div>
+  <div class="col-sm-4">
+    <div class="card">
+      <div class="card-header" style="background-color:{{ prohibited_land_details.color }}"  onclick="location.href = 'prohibited-details-entry{{ prohibited_land_details.task_id }}';">
+        Prohibited Land Details
+      </div>
+      <div class="card-body">
+        <p><b>Status:</b> {{ prohibited_land_details.status }}</p>
+        <p><b>Assign to:</b>
+        <select class="form-control" id="P_A">
+          {% if prohibited_land_details.assigned_id %}
+          {% for emp in employees_list %}
+          <option value="{{ emp.id }}" {% if emp.id == prohibited_land_details.assigned_id %} selected {% endif %} >{{ emp.employee_name }}</option>
+          {% endfor %}
+          {% else %}
+          <option selected disabled></option>
+          {% for emp in employees_list %}
+          <option value="{{ emp.id }}">{{ emp.employee_name }}</option>
+          {% endfor %}
+          {% endif %}
+        </select>
+        </p>
+        <p><b>Assigned On:</b> {{ prohibited_land_details.assigned_on }}</p>
+        <p><b>{% if prohibited_land_details.completeddate != 'N/A' %}Verified By:{% else %}Verify{% endif %}</b>
+        <select class="form-control" id="P_V">
+          {% if prohibited_land_details.verified_id %}
+          {% for emp in employees_list %}
+          <option value="{{ emp.id }}" {% if emp.id == prohibited_land_details.verified_id %} selected {% endif %} >{{ emp.employee_name }}</option>
+          {% endfor %}
+          {% else %}
+          <option selected disabled></option>
+          {% for emp in employees_list %}
+          <option value="{{ emp.id }}">{{ emp.employee_name }}</option>
+          {% endfor %}
+          {% endif %}
+        </select>
+        </p>
+        <p><b>Verified On:</b> {{ prohibited_land_details.completeddate }}</p>
+      </div>
+    </div>
+  </div>
+  <div class="col-sm-4">
+    <div class="card">
+      <div class="card-header" style="background-color:{{ encumbrance_details.color }}" onclick="location.href = 'encumbrance-details-entry{{ encumbrance_details.task_id }}';">
+        Encumbrance Details
+      </div>
+      <div class="card-body">
+        <p><b>Status:</b>
+            {{ encumbrance_details.status }}
+        </p>
+        <p><b>Assign to:</b>
+        <select class="form-control" id="E_A">
+          {% if encumbrance_details.assigned_id %}
+          {% for emp in employees_list %}
+          <option value="{{ emp.id }}" {% if emp.id == encumbrance_details.assigned_id %} selected {% endif %} >{{ emp.employee_name }}</option>
+          {% endfor %}
+          {% else %}
+          <option selected disabled></option>
+          {% for emp in employees_list %}
+          <option value="{{ emp.id }}">{{ emp.employee_name }}</option>
+          {% endfor %}
+          {% endif %}
+        </select>
+        </p>
+        <p><b>Assigned On:</b> {{ encumbrance_details.assigned_on }}</p>
+        <p><b>{% if encumbrance_details.completeddate != 'N/A' %}Verified By:{% else %}Verify{% endif %}</b>
+        <select class="form-control" id="E_V">
+          {% if encumbrance_details.verified_id %}
+          {% for emp in employees_list %}
+          <option value="{{ emp.id }}" {% if emp.id == encumbrance_details.verified_id %} selected {% endif %} >{{ emp.employee_name }}</option>
+          {% endfor %}
+          {% else %}
+          <option selected disabled></option>
+          {% for emp in employees_list %}
+          <option value="{{ emp.id }}">{{ emp.employee_name }}</option>
+          {% endfor %}
+          {% endif %}
+        </select>
+        </p>
+        <p><b>Verified On:</b> {{ encumbrance_details.completeddate }}</p>
+      </div>
+    </div>
+  </div>
+</div>
+  <div class="row m-5">
+  <div class="col-sm-4">
+    <div class="card">
+      <div class="card-header" style="background-color:{{ urban_land_details.color }}" onclick="location.href = 'urbanland-details-entry{{ urban_land_details.task_id }}';">
+        Urban Land Details
+      </div>
+      <div class="card-body">
+        <p><b>Status:</b> {{ urban_land_details.status }}</p>
+        <p><b>Assign to:</b>
+        <select class="form-control" id="U_A">
+          {% if urban_land_details.assigned_id %}
+          {% for emp in employees_list %}
+          <option value="{{ emp.id }}" {% if emp.id == urban_land_details.assigned_id %} selected {% endif %} >{{ emp.employee_name }}</option>
+          {% endfor %}
+          {% else %}
+          <option selected disabled></option>
+          {% for emp in employees_list %}
+          <option value="{{ emp.id }}">{{ emp.employee_name }}</option>
+          {% endfor %}
+          {% endif %}
+        </select>
+        </p>
+        <p><b>Assigned On:</b> {{ urban_land_details.assigned_on }}</p>
+        <p><b>{% if urban_land_details.completeddate != 'N/A' %}Verified By:{% else %}Verify{% endif %}</b>
+        <select class="form-control" id="U_V">
+          {% if urban_land_details.verified_id %}
+          {% for emp in employees_list %}
+          <option value="{{ emp.id }}" {% if emp.id == urban_land_details.verified_id %} selected {% endif %} >{{ emp.employee_name }}</option>
+          {% endfor %}
+          {% else %}
+          <option selected disabled></option>
+          {% for emp in employees_list %}
+          <option value="{{ emp.id }}">{{ emp.employee_name }}</option>
+          {% endfor %}
+          {% endif %}
+        </select>
+        </p>
+        <p><b>Verified On:</b> {{ urban_land_details.completeddate }}</p>
+      </div>
+    </div>
+  </div>
+  <div class="col-sm-4">
+    <div class="card">
+      <div class="card-header" style="background-color:{{ legal_cases_details.color }}" onclick="location.href = 'legalcase-details-entry{{ legal_cases_details.task_id }}';">
+        Legal Cases Details
+      </div>
+      <div class="card-body">
+        <p><b>Status:</b> {{ legal_cases_details.status }}</p>
+        <p><b>Assign to:</b>
+        <select class="form-control" id="L_A">
+          {% if legal_cases_details.assigned_id %}
+          {% for emp in employees_list %}
+          <option value="{{ emp.id }}" {% if emp.id == legal_cases_details.assigned_id %} selected {% endif %} >{{ emp.employee_name }}</option>
+          {% endfor %}
+          {% else %}
+          <option selected disabled></option>
+          {% for emp in employees_list %}
+          <option value="{{ emp.id }}">{{ emp.employee_name }}</option>
+          {% endfor %}
+          {% endif %}
+        </select>
+        </p>
+        <p><b>Assigned On:</b> {{ legal_cases_details.assigned_on }}</p>
+        <p><b>{% if legal_cases_details.completeddate != 'N/A' %}Verified By:{% else %}Verify{% endif %}</b>
+        <select class="form-control" id="L_V">
+          {% if legal_cases_details.verified_id %}
+          {% for emp in employees_list %}
+          <option value="{{ emp.id }}" {% if emp.id == legal_cases_details.verified_id %} selected {% endif %} >{{ emp.employee_name }}</option>
+          {% endfor %}
+          {% else %}
+          <option selected disabled></option>
+          {% for emp in employees_list %}
+          <option value="{{ emp.id }}">{{ emp.employee_name }}</option>
+          {% endfor %}
+          {% endif %}
+        </select>
+        </p>
+        <p><b>Verified On:</b> {{ legal_cases_details.completeddate }}</p>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+<script>
+  req_id = '{{ req_id }}'
+  var CSRF_TOKEN = '{{ csrf_token }}';
+</script>
+<script src="{% static '/assets/js/preliminary_verification.js' %}"></script>

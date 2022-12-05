@@ -1,0 +1,31 @@
+<html>
+<div class="sideblock">
+    <div class="tabletopbar">
+        <h2>Tasks</h2>
+        <a href="add-tasks"><i class="bi bi-plus" style=""></i></a>
+    </div>
+        <table id="tableID" class="cell-border row-border stripe">
+            <thead>
+                <tr>
+                    <td>Task Name</td>
+                    <td>Service Type</td>
+                    <td>Property Type</td>
+                    <td>Activities</td>
+                    <td>Status</td>
+                </tr>
+            </thead>
+
+            <tbody>
+                {% for task in tasks_list %}
+                <tr>
+                    <td>{{ task.name }}</td>
+                    <td>{{ task.service }}</td>
+                    <td>{{ task.property_type }}</td>
+                    <td>{{ task.activities }}</td>
+                    <td>{{ task.status }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</html>

@@ -1,0 +1,145 @@
+<html>
+<div class="sideblock">
+
+    <form class="form task-form" method="POST">
+      {% csrf_token %}
+<h3 style="color:#000;text-align:center;background-color:#C9EEFF;padding:10px;margin-bottom:2rem">Task</h3>
+            <label for="name" class="label">Name</label>
+            <input type="text" name="name" id="name" required/>
+            <br/>
+            <br/>
+
+            <label for="service_type" class="label">Service Type</label>
+            <select id="service_type" name="service_type" required>
+                <option value="" disabled selected></option>
+                {% for service in services_list %}
+                <option value="{{ service.id }}">{{ service.name }}</option>
+                {% endfor %}
+            </select>
+            <br/>
+            <br/>
+
+<!--            <div class="taskcheckbox">-->
+<!--                <label id="label1" class="label">Applicable to Property Types</label>-->
+<!--                <br/><br/>-->
+<!--                <div id="taskinput">-->
+<!--                    <input type="checkbox" name="agricultural" id="agricultural" value="agricultural"/>-->
+<!--                    <label for="agricultural" style="cursor:pointer;" class="label">Agricultural</label>-->
+
+<!--                    <input type="checkbox" name="residential" id="residential" value="residential"/>-->
+<!--                    <label for="residential" style="cursor:pointer;" class="label">Residential</label>-->
+
+<!--                    <input type="checkbox" name="commercial" id="commercial" value="commercial"/>-->
+<!--                    <label for="commercial" style="cursor:pointer;" class="label">Commercial</label>-->
+<!--                    <br/>-->
+<!--                    <br/>-->
+<!--                    <br />-->
+<!--                </div>-->
+<!--            </div>-->
+
+
+        <label id="label1" class="label">Applicable to Property Types</label>
+        <div class="tab">
+  <div class="tablinks" onclick="openCity(event, 'London')">Agricultural</div>
+  <div class="tablinks" onclick="openCity(event, 'Paris')">Residential</div>
+  <div class="tablinks" onclick="openCity(event, 'Tokyo')">Commercial</div>
+</div>
+
+
+    <div id="London" class="tabcontent city">
+        <label>Agricultural</label>
+        <div>
+           <label>Activity</label>
+            <label>Department</label>
+            <label>Efforts</label>
+            <label>Timeline(hrs)</label>
+            <label>Docs Required</label>
+        </div>
+        <div>
+            <input type="text"  required/>
+            <select required>
+                <option value="" selected disabled></option>
+                {% for dep in departments %}
+                <option value="{{ dep.id }}">{{ dep.name }}</option>
+                {% endfor %}
+            </select>
+            <input type="text"  required/>
+            <input type="text"  required/>
+            <input type="text"  required/>
+        </div>
+    </div>
+
+
+<div id="Paris" class="tabcontent city" style="display:none;">
+    <label>Residential</label>
+  <div>
+       <label>Activity</label>
+        <label>Department</label>
+        <label>Efforts</label>
+        <label>Timeline(hrs)</label>
+        <label>Docs Required</label>
+    </div>
+    <div>
+        <input type="text"  required/>
+        <select required>
+            <option value="" selected disabled></option>
+            {% for dep in departments %}
+            <option value="{{ dep.id }}">{{ dep.name }}</option>
+            {% endfor %}
+        </select>
+        <input type="text"  required/>
+        <input type="text"  required/>
+        <input type="text"  required/>
+    </div>
+</div>
+
+<div id="Tokyo" class="tabcontent city" style="display:none;">
+    <label>Commercial</label>
+  <div>
+       <label>Activity</label>
+        <label>Department</label>
+        <label>Efforts</label>
+        <label>Timeline(hrs)</label>
+        <label>Docs Required</label>
+    </div>
+    <div>
+        <input type="text"  required/>
+        <select required>
+            <option value="" selected disabled></option>
+            {% for dep in departments %}
+            <option value="{{ dep.id }}">{{ dep.name }}</option>
+            {% endfor %}
+        </select>
+        <input type="text"  required/>
+        <input type="text"  required/>
+        <input type="text"  required/>
+    </div>
+</div>
+
+
+
+            <label for="dependenttaskid" class="label">Dependent Task</label>
+            <select name="dependenttaskid" id="dependenttaskid">
+                <option value="" disabled selected></option>
+                {% for task in dependent_task %}
+                <option value="{{ task.id }}">{{ task.taskname }}</option>
+                {% endfor %}
+            </select>
+            <br/>
+            <br/>
+
+        <button type="reset" style="cursor:pointer;">Cancel</button>
+        <button type="submit" style="cursor:pointer;">Save</button>
+
+        <!--add fields in tab-->
+<!--        <div class="container1">-->
+<!--    <div class="add_form_field">Add New Field &nbsp;-->
+<!--      <span style="font-size:16px; font-weight:bold;">+ </span>-->
+<!--    </div>-->
+<!--    <div><input type="text" name="mytext[]"></div>-->
+<!--    </div>-->
+
+    </form>
+</div>
+</html>
+

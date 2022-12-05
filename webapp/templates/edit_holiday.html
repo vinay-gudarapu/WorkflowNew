@@ -1,0 +1,98 @@
+<div class="sideblock">
+<!--    <h2>Holiday Calendar</h2>-->
+
+    <form class="form holiday-form" method="POST">
+        {% csrf_token %}
+        <h2 style="color:#1D54A4;">Edit Holiday</h2>
+
+        <div class="firstblock">
+            <label  for="name">Name</label>
+            <input type="text" name="name" value="{{ name }}" id="name" required/>
+            <br/>
+            <br/>
+
+            <label for="date">Date</label>
+            <input type="date" name="date" value="{{ holidaydate }}" id="date" required/>
+            <br/>
+            <br/>
+        </div>
+
+        <label style="margin-top:1rem;">Type</label>
+        <br/>
+        <br/>
+        <input type="radio" name="type" id="manadatory" value="M" required {% if holidaytype == 'M' %} checked {% endif %}/>
+        <label for="manadatory" style="cursor:pointer;font-size:1.3rem;">Manadatory</label>
+
+        <input type="radio" name="type" id="optional" value="O" style="margin-left:1rem;" required {% if holidaytype == 'O' %} checked {% endif %}/>
+        <label for="optional" style="cursor:pointer;font-size:1.3rem;">Optional</label>
+        <br/>
+        <br/>
+
+        <div class="stateflex">
+            <div>
+                <label>Departments</label>
+                <br/><br/>
+                {% for department in departments %}
+                    <input type="checkbox" name="departments" id="{{ department.id }}" value="{{ department.id }}"{% if department.id in hldy_deps %} checked {% endif %}/>
+                    <label for="{{ department.id }}" style="cursor:pointer;">{{ department.name }}</label>
+                    <br/><br/>
+                {% endfor %}
+
+<!--                <input type="checkbox" name="departments" id="revenue" value="revenue"/>-->
+<!--                <label for="revenue" style="cursor:pointer;">Revenue</label>-->
+<!--                <br/><br/>-->
+
+<!--                <input type="checkbox" name="departments" id="legal" value="legal"/>-->
+<!--                <label for="legal" style="cursor:pointer;">Legal</label>-->
+<!--                <br/><br/>-->
+
+<!--                <input type="checkbox" name="departments" id="survey" value="survey"/>-->
+<!--                <label for="survey" style="cursor:pointer;">Survey</label>-->
+<!--                <br/><br/>-->
+            </div>
+            <div>
+                <label>States</label>
+                <br/><br/>
+
+                <input type="checkbox" name="state" id="telangana" value="Telangana" {% if "Telangana" in hldy_locs %} checked {% endif %}/>
+                <label for="telangana" style="cursor:pointer;">Telangana</label>
+                <br/><br/>
+
+                <input type="checkbox" name="state" id="andhrapradesh" value="Andhra Pradesh" {% if "Andhra Pradesh" in hldy_locs %} checked {% endif %}/>
+                <label for="andhrapradesh" style="cursor:pointer;">Andhra Pradesh</label>
+                <br/><br/>
+            </div>
+        </div>
+        <label style="margin-top:1rem;">Status</label>
+        <br/>
+        <br/>
+        <input type="radio" name="status" id="active" value="A" required {% if status == 'A' %} checked {% endif %}/>
+        <label for="manadatory" style="cursor:pointer;font-size:1.3rem;">Active</label>
+
+        <input type="radio" name="status" id="inactive" value="I" style="margin-left:1rem;" required {% if status == 'I' %} checked {% endif %}/>
+        <label for="optional" style="cursor:pointer;font-size:1.3rem;">Inactive</label>
+        <br/>
+        <br/>
+        <button type="reset">Cancel</button>
+        <button type="submit">Save</button>
+    </form>
+</div>
+<script>
+    departments = $("input:checkbox[name='departments']");
+    departments.on("click", function () {
+        if (departments.is(":checked")) {
+            departments.prop("required", false)
+        } else {
+            departments.prop("required", true)
+        }
+    });
+
+    states = $("input:checkbox[name='state']");
+    states.on("click", function () {
+        if (states.is(":checked")) {
+            states.prop("required", false)
+        } else {
+            states.prop("required", true)
+        }
+    });
+</script>
