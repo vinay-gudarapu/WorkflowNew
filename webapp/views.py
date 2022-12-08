@@ -440,7 +440,7 @@ def preliminary_verification(request, req_id):
                                                 'legal_cases_details': legal_cases_details,
                                                 'req_id': req_id})
     except Exception as e:
-        print(str(e))
+        messages.warning(request, str(e))
         return redirect('tasks')
 
 
